@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Friendship Day 🎉</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   DESIGN TOKENS
+   ============================================================ */
+:root{
+  --lavender:#c9b6e8;
+  --sky:#b7e0ff;
+  --peach:#ffd9b8;
+  --pink:#ffc9de;
+  --white:#ffffff;
+  --cream:#fffaf6;
+  --ink:#3d2c56;
+  --ink-soft:#6b5a89;
+  --glass-bg:rgba(255,255,255,0.45);
+  --glass-border:rgba(255,255,255,0.65);
+  --shadow:0 20px 60px rgba(120,90,160,0.18);
+  --radius:24px;
+  --font-display:'Playfair Display', serif;
+  --font-body:'Poppins', sans-serif;
+  --bg-grad: linear-gradient(120deg, var(--lavender), var(--sky) 35%, var(--peach) 70%, var(--pink));
+}
+body.dark{
+  --ink:#f5eefe;
+  --ink-soft:#c9b8e6;
+  --glass-bg:rgba(40,26,64,0.45);
+  --glass-border:rgba(255,255,255,0.12);
+  --shadow:0 20px 60px rgba(0,0,0,0.45);
+  --bg-grad: linear-gradient(120deg, #1c2b4a, #3a2158 45%, #241335 75%, #2c1740);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--cream);
+  overflow-x:hidden;
+  cursor:none;
+  transition:background .6s ease, color .6s ease;
+}
+body.dark{ background:#140b20; }
+h1,h2,h3{ font-family:var(--font-display); font-weight:600; }
+
+.section{ position:relative; padding:120px 24px; max-width:1100px; margin:0 auto; }
+.section-title{ text-align:center; font-size:clamp(1.8rem,4vw,2.8rem); margin-bottom:16px; }
+.section-sub{ text-align:center; color:var(--ink-soft); max-width:540px; margin:0 auto 60px; font-weight:300; }
+.reveal{ opacity:0; transform:translateY(40px); transition:opacity .9s ease, transform .9s ease; }
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+.glass{
+  background:var(--glass-bg); border:1px solid var(--glass-border);
+  backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  border-radius:var(--radius); box-shadow:var(--shadow);
+}
+
+/* CURSOR */
+.cursor-dot{ position:fixed; top:0; left:0; width:10px; height:10px; background:var(--sky); border-radius:50%; pointer-events:none; z-index:9999; mix-blend-mode:difference; transform:translate(-50%,-50%); }
+.cursor-ring{ position:fixed; top:0; left:0; width:34px; height:34px; border:1.5px solid var(--lavender); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .25s ease, height .25s ease, border-color .25s ease; }
+@media (hover:none){ body{ cursor:auto; } .cursor-dot,.cursor-ring{ display:none; } }
+
+.theme-toggle{ position:fixed; top:22px; right:22px; z-index:500; width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; background:var(--glass-bg); border:1px solid var(--glass-border); backdrop-filter:blur(12px); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; position:relative; background:var(--bg-grad); background-size:300% 300%;
+  animation:gradientShift 14s ease infinite; overflow:hidden;
+}
+@keyframes gradientShift{ 0%{background-position:0% 50%;} 50%{background-position:100% 50%;} 100%{background-position:0% 50%;} }
+.hero-eyebrow{ letter-spacing:.35em; text-transform:uppercase; font-size:12px; color:var(--ink); opacity:.7; margin-bottom:18px; font-weight:600; }
+.hero h1{
+  font-size:clamp(2.6rem,8vw,5.2rem); line-height:1.05;
+  background:linear-gradient(100deg, var(--ink) 30%, #fff 50%, var(--ink) 70%);
+  background-size:220% auto; -webkit-background-clip:text; background-clip:text; color:transparent;
+  animation:shine 5s linear infinite;
+}
+@keyframes shine{ to{ background-position:-220% center; } }
+.hero p.sub{ margin-top:22px; font-size:clamp(1rem,2vw,1.25rem); color:var(--ink); opacity:.85; max-width:580px; font-weight:300; animation:fadeUp 1.4s ease .3s both; }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);} }
+.scroll-indicator{ position:absolute; bottom:38px; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink); opacity:.7; font-size:11px; letter-spacing:.2em; text-transform:uppercase; }
+.scroll-indicator .line{ width:1px; height:34px; background:var(--ink); opacity:.5; animation:scrollLine 1.8s ease infinite; }
+@keyframes scrollLine{ 0%{ transform:scaleY(0); transform-origin:top;} 50%{ transform:scaleY(1); transform-origin:top;} 51%{ transform-origin:bottom;} 100%{ transform:scaleY(0); transform-origin:bottom;} }
+
+.floaty{ position:absolute; pointer-events:none; opacity:.85; animation:floatUp linear infinite; }
+@keyframes floatUp{ 0%{ transform:translateY(0) rotate(0deg); opacity:0;} 10%{opacity:.85;} 90%{opacity:.4;} 100%{ transform:translateY(-105vh) rotate(360deg); opacity:0;} }
+
+/* balloons */
+.balloon{ position:absolute; bottom:-140px; width:46px; height:58px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; animation:balloonRise linear infinite; opacity:.9; }
+.balloon::after{ content:''; position:absolute; left:50%; top:100%; width:1px; height:50px; background:rgba(90,70,110,0.4); transform:translateX(-50%); }
+@keyframes balloonRise{ 0%{ transform:translateY(0) translateX(0);} 50%{ transform:translateY(-60vh) translateX(20px);} 100%{ transform:translateY(-125vh) translateX(-10px);} }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline{ position:relative; padding-left:40px; }
+.timeline::before{ content:''; position:absolute; left:9px; top:0; bottom:0; width:2px; background:linear-gradient(var(--lavender), var(--sky)); }
+.tl-item{ position:relative; margin-bottom:46px; padding:22px 26px; }
+.tl-item::before{ content:''; position:absolute; left:-40px; top:26px; width:16px; height:16px; border-radius:50%; background:var(--peach); border:3px solid var(--white); box-shadow:0 0 0 4px rgba(255,217,184,0.4); }
+.tl-item .tl-tag{ font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); }
+.tl-item h3{ font-size:1.15rem; margin:6px 0; }
+.tl-item p{ font-size:.9rem; color:var(--ink-soft); font-weight:300; }
+
+/* CARDS */
+.card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:22px; }
+.quality-card{ padding:34px 22px; text-align:center; transition:transform .4s ease, box-shadow .4s ease; }
+.quality-card:hover{ transform:translateY(-10px); box-shadow:0 30px 70px rgba(150,170,230,0.35); }
+.quality-card .icon{ font-size:34px; margin-bottom:14px; display:block; }
+.quality-card h3{ font-size:1.1rem; margin-bottom:6px; }
+.quality-card p{ font-size:.85rem; color:var(--ink-soft); font-weight:300; }
+
+/* STATS */
+.stats-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:20px; text-align:center; }
+.stat-num{ font-family:var(--font-display); font-size:clamp(1.8rem,4vw,2.6rem); color:var(--ink); }
+.stat-label{ font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); margin-top:6px;}
+
+/* QUIZ */
+.quiz-card{ padding:36px; max-width:520px; margin:0 auto; text-align:center; }
+.quiz-q{ font-family:var(--font-display); font-size:1.2rem; margin-bottom:20px; min-height:60px; }
+.quiz-options{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.quiz-opt{ padding:14px 10px; border-radius:14px; border:1px solid var(--glass-border); background:rgba(255,255,255,0.3); cursor:pointer; transition:background .25s ease, transform .2s ease; }
+.quiz-opt:hover{ transform:translateY(-3px); }
+.quiz-opt.correct{ background:var(--peach) !important; }
+.quiz-feedback{ margin-top:16px; font-size:.9rem; min-height:20px; color:var(--ink-soft); }
+.quiz-progress{ margin-top:22px; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); }
+
+/* GALLERY */
+.polaroid-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:28px; padding-top:10px; }
+.polaroid{ background:var(--white); padding:14px 14px 46px; border-radius:6px; box-shadow:0 15px 35px rgba(90,60,120,0.2); transform:rotate(var(--tilt,-3deg)); transition:transform .35s ease, box-shadow .35s ease; position:relative; }
+.polaroid:hover{ transform:rotate(0deg) translateY(-8px) scale(1.03); box-shadow:0 0 40px rgba(183,224,255,0.5), 0 25px 50px rgba(90,60,120,0.3); }
+.polaroid .photo-ph{ aspect-ratio:1/1; border-radius:2px; background:linear-gradient(135deg,var(--lavender),var(--sky)); display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.85); font-size:13px; }
+.polaroid figcaption{ position:absolute; bottom:12px; left:0; right:0; text-align:center; font-family:var(--font-display); font-style:italic; font-size:.95rem; color:#3d2c56; }
+
+/* APPRECIATION WALL */
+.wall-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:24px; }
+.sticky{ padding:26px 20px; font-family:var(--font-display); font-style:italic; background:linear-gradient(160deg,#fff6da,#ffe9b8); color:#5a4322; border-radius:4px; box-shadow:0 12px 24px rgba(0,0,0,0.15); transform:rotate(var(--tilt,-2deg)); transition:transform .3s ease; animation:stickyFloat 5s ease-in-out infinite; }
+.sticky:nth-child(2n){ background:linear-gradient(160deg,#e3f1ff,#c9e6ff); color:#2f4a6b; }
+.sticky:nth-child(3n){ background:linear-gradient(160deg,#fff0e3,#ffd9b8); color:#7a4a22; }
+.sticky:hover{ transform:rotate(0deg) translateY(-6px); }
+@keyframes stickyFloat{ 0%,100%{ transform:translateY(0) rotate(var(--tilt,-2deg)); } 50%{ transform:translateY(-6px) rotate(var(--tilt,-2deg)); } }
+
+/* SURPRISE BUTTON */
+.surprise-wrap{ text-align:center; }
+.magnetic-btn{ position:relative; display:inline-block; padding:20px 52px; font-family:var(--font-display); font-size:1.2rem; color:var(--white); background:linear-gradient(120deg,#8f6fc9,#6fa8d9); border:none; border-radius:60px; cursor:pointer; box-shadow:0 20px 50px rgba(120,150,220,0.4); transition:transform .25s ease; }
+canvas#fx-canvas{ position:fixed; inset:0; pointer-events:none; z-index:6000; }
+.popup-overlay{ position:fixed; inset:0; background:rgba(30,15,45,0.55); display:flex; align-items:center; justify-content:center; z-index:6500; opacity:0; pointer-events:none; transition:opacity .4s ease; }
+.popup-overlay.show{ opacity:1; pointer-events:auto; }
+.popup-card{ padding:44px 40px; max-width:400px; text-align:center; transform:scale(.85); transition:transform .4s ease; }
+.popup-overlay.show .popup-card{ transform:scale(1); }
+.popup-card p{ font-family:var(--font-display); font-size:1.3rem; line-height:1.5; margin-bottom:20px;}
+.popup-close{ border:none; background:var(--ink); color:#fff; padding:10px 26px; border-radius:30px; cursor:pointer; font-family:var(--font-body); }
+
+/* PLAYLIST */
+.player-card{ padding:28px 30px; display:flex; align-items:center; gap:22px; max-width:460px; margin:0 auto; }
+.play-btn{ width:54px; height:54px; border-radius:50%; border:none; cursor:pointer; background:linear-gradient(120deg,#8f6fc9,#6fa8d9); color:#fff; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.eq{ display:flex; align-items:flex-end; gap:4px; height:32px; flex:1; }
+.eq span{ width:6px; background:linear-gradient(var(--peach),var(--pink)); border-radius:3px; height:20%; transition:height .2s ease; }
+.player-track{ font-size:.8rem; color:var(--ink-soft); margin-top:4px; }
+
+/* BADGES */
+.badge-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:22px; }
+.badge{ padding:28px 18px; text-align:center; position:relative; cursor:pointer; overflow:hidden; }
+.badge .icon{ font-size:32px; display:block; margin-bottom:10px; }
+.badge h3{ font-size:1rem; }
+.badge .desc{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:16px;
+  background:linear-gradient(135deg, rgba(143,111,201,0.92), rgba(111,168,217,0.92)); color:#fff; font-size:.82rem;
+  opacity:0; transform:translateY(100%); transition:all .35s ease; border-radius:var(--radius);
+}
+.badge:hover .desc{ opacity:1; transform:translateY(0); }
+
+/* TREE */
+.tree-wrap{ text-align:center; position:relative; }
+.tree-msg{ margin-top:18px; min-height:28px; font-family:var(--font-display); font-style:italic; color:var(--ink); }
+.leaf{ cursor:pointer; transition:transform .25s ease, opacity .25s ease; transform-origin:center; }
+.leaf:hover{ transform:scale(1.3); }
+
+/* FLOATING COMPLIMENTS */
+.compliment{ position:fixed; font-family:var(--font-display); font-style:italic; color:var(--ink); background:var(--glass-bg); border:1px solid var(--glass-border); padding:8px 18px; border-radius:30px; font-size:.85rem; pointer-events:none; z-index:400; opacity:0; animation:complimentFloat 6s ease forwards; }
+@keyframes complimentFloat{ 0%{ opacity:0; transform:translateY(20px) scale(.9);} 12%{ opacity:1; transform:translateY(0) scale(1);} 85%{ opacity:1;} 100%{ opacity:0; transform:translateY(-40px) scale(.95);} }
+
+/* NIGHT ENDING */
+.night{ min-height:100vh; position:relative; overflow:hidden; background:linear-gradient(180deg,#0c1428,#1c2140 55%, #2c1a4d); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color:#f5eefe; padding:60px 24px; }
+.moon{ width:90px; height:90px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff8e6, #ffe9b0 60%, #ffdca0); box-shadow:0 0 60px 20px rgba(255,232,170,0.35); margin-bottom:36px; }
+.night h2{ font-size:clamp(1.8rem,4vw,2.6rem); margin-bottom:14px; }
+.night p.msg{ max-width:520px; color:#d9cdf0; font-weight:300; line-height:1.7; margin-bottom:16px; }
+.night .final-line{ font-family:var(--font-display); font-style:italic; color:#ffe3c2; }
+.star{ position:absolute; background:#fff; border-radius:50%; opacity:.8; }
+
+footer.credit{ text-align:center; padding:30px; font-size:11px; letter-spacing:.1em; color:var(--ink-soft); text-transform:uppercase; }
+
+@media (max-width:640px){
+  .quiz-options{ grid-template-columns:1fr; }
+  .player-card{ flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</div>
+<canvas id="fx-canvas"></canvas>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section class="hero" id="hero">
+  <div class="hero-eyebrow">Friendship Day · A Little Surprise For You</div>
+  <h1>Happy Friendship Day! 🎉</h1>
+  <p class="sub" id="heroSub">You make life brighter, classmate. 🎉</p>
+  <div class="scroll-indicator"><span>Scroll Down</span><span class="line"></span></div>
+</section>
+
+<!-- ============================================================
+     WHY YOU'RE AN AMAZING FRIEND
+     ============================================================ -->
+<section class="section">
+  <h2 class="section-title reveal">Why You're Amazing</h2>
+  <div class="card-grid">
+    <div class="quality-card glass reveal"><span class="icon">😊</span><h3>Always Cheerful</h3></div>
+    <div class="quality-card glass reveal"><span class="icon">🌈</span><h3>Positive Vibes</h3></div>
+    <div class="quality-card glass reveal"><span class="icon">🎉</span><h3>Fun to Be Around</h3></div>
+    <div class="quality-card glass reveal"><span class="icon">🤝</span><h3>Trustworthy</h3></div>
+    <div class="quality-card glass reveal"><span class="icon">💡</span><h3>Inspiring</h3></div>
+    <div class="quality-card glass reveal"><span class="icon">🌸</span><h3>Kind Heart</h3></div>
+  </div>
+</section>
+
+<!-- ============================================================
+     INTERACTIVE SURPRISE
+     ============================================================ -->
+<section class="section surprise-wrap">
+  <h2 class="section-title reveal">One Last Surprise</h2>
+  <button class="magnetic-btn reveal" id="surpriseBtn">🎁 Click for a Surprise</button>
+</section>
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-card glass">
+    <p id="popupText">You make the world a little brighter just by being yourself.<br>Happy Friendship Day! 🎉</p>
+    <button class="popup-close" id="popupClose">Close</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     NIGHT / SURPRISE ENDING
+     ============================================================ -->
+<section class="night" id="nightSection">
+  <div class="moon"></div>
+  <h2>Happy Friendship Day!</h2>
+  <p class="final-line">✨ Here's to more memories, classmate! ✨</p>
+</section>
+
+<footer class="credit">crafted for one of a kind friend</footer>
+
+<script>
+/* ============================================================
+   CURSOR — tiny stars + ripple + magnetic buttons
+   ============================================================ */
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0, rx=0, ry=0;
+window.addEventListener('mousemove', e=>{
+  mx=e.clientX; my=e.clientY;
+  dot.style.left=mx+'px'; dot.style.top=my+'px';
+  if(Math.random()<0.15) spawnStar(mx,my);
+});
+function animRing(){ rx += (mx-rx)*0.15; ry += (my-ry)*0.15; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); }
+animRing();
+window.addEventListener('mousedown', e=> spawnRipple(e.clientX,e.clientY));
+function spawnStar(x,y){
+  const s = document.createElement('div');
+  s.textContent='✦';
+  s.style.cssText=`position:fixed;left:${x}px;top:${y}px;color:var(--sky);font-size:10px;pointer-events:none;z-index:9997;opacity:.85;transition:transform 1s ease, opacity 1s ease;`;
+  document.body.appendChild(s);
+  requestAnimationFrame(()=>{ s.style.transform=`translate(${(Math.random()-0.5)*30}px,-${30+Math.random()*20}px)`; s.style.opacity='0'; });
+  setTimeout(()=>s.remove(),1000);
+}
+function spawnRipple(x,y){
+  const r = document.createElement('div');
+  r.style.cssText=`position:fixed;left:${x}px;top:${y}px;width:10px;height:10px;border:1px solid var(--ink);border-radius:50%;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:all .6s ease;opacity:.6;`;
+  document.body.appendChild(r);
+  requestAnimationFrame(()=>{ r.style.width='60px'; r.style.height='60px'; r.style.opacity='0'; });
+  setTimeout(()=>r.remove(),600);
+}
+document.querySelectorAll('.magnetic-btn').forEach(btn=>{
+  btn.addEventListener('mousemove', e=>{
+    const rect = btn.getBoundingClientRect();
+    btn.style.transform = `translate(${(e.clientX-rect.left-rect.width/2)*0.25}px, ${(e.clientY-rect.top-rect.height/2)*0.25}px)`;
+    ring.style.width='60px'; ring.style.height='60px'; ring.style.borderColor='var(--peach)';
+  });
+  btn.addEventListener('mouseleave', ()=>{
+    btn.style.transform='translate(0,0)';
+    ring.style.width='34px'; ring.style.height='34px'; ring.style.borderColor='var(--lavender)';
+  });
+});
+
+/* THEME TOGGLE */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.addEventListener('click', ()=>{
+  document.body.classList.toggle('dark');
+  themeToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+});
+
+/* REVEAL ON SCROLL */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* HERO — floating sparkles + confetti bits + balloons */
+const heroEl = document.getElementById('hero');
+const glyphs = ['✨','🎊','💫','🌸'];
+for(let i=0;i<16;i++){
+  const f = document.createElement('div');
+  f.className='floaty';
+  f.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+  f.style.left = Math.random()*100+'%';
+  f.style.bottom = '-40px';
+  f.style.fontSize = (12+Math.random()*18)+'px';
+  f.style.animationDuration = (8+Math.random()*10)+'s';
+  f.style.animationDelay = (Math.random()*10)+'s';
+  heroEl.appendChild(f);
+}
+const balloonColors = ['#c9b6e8','#b7e0ff','#ffd9b8','#ffc9de'];
+for(let i=0;i<7;i++){
+  const b = document.createElement('div');
+  b.className='balloon';
+  b.style.left = (5+Math.random()*90)+'%';
+  b.style.background = `radial-gradient(circle at 35% 30%, #fff, ${balloonColors[i%balloonColors.length]})`;
+  b.style.animationDuration = (14+Math.random()*8)+'s';
+  b.style.animationDelay = (Math.random()*12)+'s';
+  heroEl.appendChild(b);
+}
+
+/* ============================================================
+   CONFETTI + FIREWORKS (canvas)
+   ============================================================ */
+const canvas = document.getElementById('fx-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let confetti = [];
+let fireworks = [];
+
+function burstConfetti(){
+  const colors = ['#c9b6e8','#b7e0ff','#ffd9b8','#ffc9de','#ffffff'];
+  for(let i=0;i<130;i++){
+    confetti.push({
+      x: canvas.width/2, y: canvas.height*0.35,
+      vx:(Math.random()-0.5)*14, vy:(Math.random()-1.2)*14,
+      size: 4+Math.random()*6, color: colors[Math.floor(Math.random()*colors.length)],
+      rot: Math.random()*360, vr:(Math.random()-0.5)*10, life:0, maxLife: 90+Math.random()*40
+    });
+  }
+}
+function launchFirework(){
+  const colors = ['#c9b6e8','#b7e0ff','#ffd9b8','#ffc9de'];
+  const cx = canvas.width*(0.2+Math.random()*0.6);
+  const cy = canvas.height*(0.15+Math.random()*0.25);
+  const color = colors[Math.floor(Math.random()*colors.length)];
+  for(let i=0;i<50;i++){
+    const angle = (Math.PI*2*i)/50;
+    const speed = 2+Math.random()*3;
+    fireworks.push({
+      x:cx, y:cy, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed,
+      color, life:0, maxLife:55+Math.random()*20
+    });
+  }
+}
+function animateFx(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confetti.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=0.28; p.rot+=p.vr; p.life++;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot*Math.PI/180);
+    ctx.fillStyle=p.color; ctx.globalAlpha = Math.max(0, 1-p.life/p.maxLife);
+    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    ctx.restore();
+  });
+  confetti = confetti.filter(p=>p.life < p.maxLife);
+
+  fireworks.forEach(p=>{
+    p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.life++;
+    ctx.save(); ctx.globalAlpha = Math.max(0, 1-p.life/p.maxLife);
+    ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,2.4,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+  });
+  fireworks = fireworks.filter(p=>p.life < p.maxLife);
+
+  requestAnimationFrame(animateFx);
+}
+animateFx();
+
+const surpriseBtn = document.getElementById('surpriseBtn');
+const popupOverlay = document.getElementById('popupOverlay');
+document.getElementById('popupClose').addEventListener('click', ()=> popupOverlay.classList.remove('show'));
+surpriseBtn.addEventListener('click', ()=>{
+  burstConfetti();
+  launchFirework();
+  setTimeout(launchFirework, 300);
+  setTimeout(launchFirework, 600);
+  popupOverlay.classList.add('show');
+  playChime();
+});
+
+function playChime(){
+  try{
+    const Actx = window.AudioContext || window.webkitAudioContext;
+    const actx = new Actx();
+    const notes = [523.25, 659.25, 783.99];
+    notes.forEach((freq,i)=>{
+      const osc = actx.createOscillator();
+      const gain = actx.createGain();
+      osc.type='sine'; osc.frequency.value=freq;
+      gain.gain.setValueAtTime(0.001, actx.currentTime + i*0.12);
+      gain.gain.linearRampToValueAtTime(0.12, actx.currentTime + i*0.12 + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, actx.currentTime + i*0.12 + 0.8);
+      osc.connect(gain); gain.connect(actx.destination);
+      osc.start(actx.currentTime + i*0.12);
+      osc.stop(actx.currentTime + i*0.12 + 0.85);
+    });
+  }catch(e){}
+}
+
+/* ============================================================
+   FLOATING COMPLIMENTS
+   ============================================================ */
+const compliments = ["🌸 You're Awesome","✨ Stay Amazing","😊 Keep Smiling","🎉 You're One of a Kind","💙 Thanks for Being You","🌈 Never Change"];
+function spawnCompliment(){
+  const c = document.createElement('div');
+  c.className='compliment';
+  c.textContent = compliments[Math.floor(Math.random()*compliments.length)];
+  c.style.left = (10+Math.random()*70)+'vw';
+  c.style.top = (20+Math.random()*60)+'vh';
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(), 6000);
+}
+setInterval(spawnCompliment, 4500);
+
+/* ============================================================
+   NIGHT ENDING — stars + shooting stars + final confetti
+   ============================================================ */
+const nightSection = document.getElementById('nightSection');
+for(let i=0;i<80;i++){
+  const s = document.createElement('div');
+  s.className='star';
+  const size = Math.random()*2+1;
+  s.style.width=size+'px'; s.style.height=size+'px';
+  s.style.left=Math.random()*100+'%'; s.style.top=Math.random()*100+'%';
+  s.style.opacity = 0.3+Math.random()*0.7;
+  nightSection.appendChild(s);
+}
+function spawnShootingStar(){
+  const s = document.createElement('div');
+  s.style.cssText = 'position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;';
+  const startX = Math.random()*70, startY = Math.random()*40;
+  s.style.left = startX+'%'; s.style.top = startY+'%';
+  s.style.boxShadow = '0 0 8px 2px rgba(255,255,255,0.8)';
+  nightSection.appendChild(s);
+  const dx = 150+Math.random()*100, dy = 80+Math.random()*60;
+  s.animate([{ transform:'translate(0,0)', opacity:1 },{ transform:`translate(${dx}px, ${dy}px)`, opacity:0 }], { duration: 1000+Math.random()*500, easing:'ease-out' });
+  setTimeout(()=>s.remove(), 1600);
+}
+let shootingInterval, finalConfettiFired = false;
+const nightIO = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      shootingInterval = setInterval(spawnShootingStar, 1800);
+      if(!finalConfettiFired){ finalConfettiFired = true; setTimeout(burstConfetti, 500); }
+    }else{
+      clearInterval(shootingInterval);
+    }
+  });
+},{threshold:0.3});
+nightIO.observe(nightSection);
+
+/* ============================================================
+   NAME PERSONALIZATION
+   EDIT THIS LINE — put your friend's name here directly
+   ============================================================ */
+const FRIEND_NAME = "Shifanaa"; // <-- change this to her actual name
+const heroSub = document.getElementById('heroSub');
+const popupText = document.getElementById('popupText');
+heroSub.textContent = `You make life brighter, ${FRIEND_NAME}. 🎉`;
+popupText.innerHTML = `You make the world a little brighter just by being yourself, ${FRIEND_NAME}.<br>Happy Friendship Day! 🎉`;
+
+
+</script>
+</body>
+</html>
